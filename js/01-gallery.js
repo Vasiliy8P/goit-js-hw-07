@@ -6,7 +6,6 @@ console.log(galleryItems);
 const galleryEl = document.querySelector('.gallery');
 
 galleryEl.addEventListener('click', onGalleryItemClick);
-window.addEventListener('keydown', onModalCloseKeydown)
 
 const galleryItemsMarkup = createGalleryItemsMarkup(galleryItems);
 
@@ -36,16 +35,21 @@ function onGalleryItemClick(event) {
     }
 
     const galleryLinkEl = event.target.closest('.gallery__link');
-    const hrefOriginal = galleryLinkEl.href
+    const hrefOriginal = galleryLinkEl.href;
 
     const instance = basicLightbox.create(`
     <img src="${hrefOriginal}" width="800" height="600">
-    `)
+    `);
 
     instance.show()
+
+    window.addEventListener('keydown', onModalCloseKeydown)
+    
+    function onModalCloseKeydown(event) {
+        if (event.code !== 'Escape') {
+                return;
+            }
+
+        instance.close()
+    }
 }
-
-// function onModalCloseKeydown(event) {
-//     instance.close()
-// }
-
