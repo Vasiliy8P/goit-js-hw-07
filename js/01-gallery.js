@@ -24,8 +24,6 @@ function createGalleryItemsMarkup(items) {
     ).join('');
 }
 
-console.log(galleryItemsMarkup);
-
 galleryEl.innerHTML = galleryItemsMarkup;
 
 function onGalleryItemClick(event) {
@@ -39,11 +37,16 @@ function onGalleryItemClick(event) {
 
     const instance = basicLightbox.create(`
     <img src="${hrefOriginal}" width="800" height="600">
-    `);
+    `, {
+        onShow: (instance) => {
+            window.addEventListener('keydown', onModalCloseKeydown) 
+        },
+        onClose: (instance) => {
+            window.removeEventListener('keydown', onModalCloseKeydown)
+        }
+    });
 
     instance.show()
-
-    window.addEventListener('keydown', onModalCloseKeydown)
     
     function onModalCloseKeydown(event) {
         if (event.code !== 'Escape') {
